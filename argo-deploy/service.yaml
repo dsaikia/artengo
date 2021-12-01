@@ -10,4 +10,4 @@ spec:
       nodePort: 31111 # external port that will be mapped on every cluster node. External traffic will hit this port.
       protocol: TCP
   selector: # label selector. This has to match the pod label that we deployed.
-    app: sf-demo
+    app: my-service

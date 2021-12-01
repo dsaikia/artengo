@@ -11,6 +11,6 @@ public class HelloResource {
 
     @GetMapping
     public String hello(){
-        return "Hello from sf-demo";
+        return "Hello from my-service";
     }
 }
