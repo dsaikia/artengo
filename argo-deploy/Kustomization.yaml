@@ -8,6 +8,8 @@ metadata:
 #commonLabels:
 #  app: hello
 
+namespace: myservice
+
 resources:
   - deployment.yaml
   - service.yaml
