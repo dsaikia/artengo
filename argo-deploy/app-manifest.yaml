@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ps-nodeport
+spec:
+  ports:
+  - nodePort: 31111
+    port: 80
+    protocol: TCP
+    targetPort: 8085
+  selector:
+    app: my-service
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: my-service
+  name: my-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-service
+  template:
+    metadata:
+      labels:
+        app: my-service
+    spec:
+      containers:
+      - image: debojit/my-service:1.0
+        imagePullPolicy: Always
+        name: my-service
+        ports:
+        - containerPort: 8085
+      terminationGracePeriodSeconds: 5
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+  name: my-service-ingress
+spec:
+  rules:
+  - host: my-service.info
+    http:
+      paths:
+      - backend:
+          service:
+            name: ps-nodeport
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
